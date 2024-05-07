@@ -35,6 +35,6 @@ body {
 
 /* Active navbar link */
 .navbar a.active {
-  background-color: #ffc72c;
+  background-color: #2cc3ff;
   color: #fff;
 }
