@@ -4,11 +4,13 @@ import sqlite3
 app = Flask(__name__)
 
 
+# Route for Home Page
 @app.route('/')
 def home():
     return render_template("home.html", title="Home")
 
 
+# Route for Pizza.html Page
 @app.route('/pizza/<int:id>')
 def pizza(id):
     conn = sqlite3.connect('Database/pizza.db')
@@ -22,16 +24,19 @@ def pizza(id):
     return render_template('pizza.html', pizza=pizza, base=base, topping=topping)
 
 
+# Route for offers page
 @app.route('/offers')
 def offers():
     return render_template("offers.html", title="Contact")
 
 
+# Route For Stores Page
 @app.route('/stores')
 def stores():
     return render_template("stores.html", title="About")
 
 
+# Route for menu page
 @app.route('/menu')
 def menu():
     conn = sqlite3.connect('Database/pizza.db')

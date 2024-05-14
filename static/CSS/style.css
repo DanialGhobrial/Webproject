@@ -1,4 +1,9 @@
 /* GLOBAL STYLES */
+
+img{
+  width: 100%;
+}
+
 body {
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   background-color: rgb(255, 255, 255);
@@ -37,4 +42,14 @@ body {
 .navbar a.active {
   background-color: #2cc3ff;
   color: #fff;
+}
+
+
+/* GRID STYLES */
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 5px;
+
 }
