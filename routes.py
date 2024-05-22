@@ -100,6 +100,7 @@ def signup():
         query_db(sql, (username, hashed_password))
         # message flashes exist in the base.html template and give user feedback
         flash("Sign Up Successful")
+        return redirect("/login")
     return render_template('signup.html')
 
 @app.route('/logout')
