@@ -1,5 +1,18 @@
 {% extends "layout.html" %}
 {% block content %}
-   <h2>{{pizza[1]}}</h2>
+<div class="image11">
+    <img src="{{ pizza[3] }}">
+  </div>
+
+  <div class="text11">
+    <h2>{{pizza[1]}}</h2>
     <h1>${{pizza[2]}}</h1>
+
+    <form action="/cart" method="post">
+      <input type="hidden" name="id" value="{{pizza[0]}}">
+      <button>Add To Cart</button>
+    </form>
+  </div>
+
+   
 {% endblock %}

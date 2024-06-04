@@ -53,3 +53,16 @@ body {
   gap: 5px;
 
 }
+
+.image11 {
+  max-width: 50%;
+  max-height:50%;
+  float: left;
+}
+
+.text11 {
+  font-size: 20px;
+  padding-left: 10px;
+  padding-top: 10%;
+  float: center;
+}

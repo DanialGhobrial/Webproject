@@ -78,6 +78,8 @@ def login():
                 # Store the username in the session
                 session['user'] = user
                 flash("Logged in successfully")
+                session['cart'] = []
+                return redirect("/menu")
             else:
                 flash("Password incorrect")
         else:
@@ -103,11 +105,29 @@ def signup():
         return redirect("/login")
     return render_template('signup.html')
 
+
 @app.route('/logout')
 def logout():
     # just clear the username from the session and redirect back to the home page
     session['user'] = None
+    session['cart'] = None
     return redirect('/')
+
+
+
+@app.post('/cart')
+def cart():
+    id = request.form['id']
+    if "cart" in session:
+        print("already exists")
+        print(session['cart'])
+        values = session['cart']
+        values.append(id)
+        session['cart'] = values
+        print(session['cart'])
+    else:
+        print("No cart in session")
+    return redirect("/menu")
 
 
 if __name__ == "__main__":
