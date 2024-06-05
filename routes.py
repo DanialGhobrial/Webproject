@@ -38,6 +38,12 @@ def pizza(id):
     return render_template('pizza.html', pizza=pizza, base=base, topping=topping)
 
 
+# Route for Checkout page
+@app.route('/checkout')
+def checkout():
+    return render_template("checkout.html", title="checkout")
+
+
 # Route for offers page
 @app.route('/offers')
 def offers():
@@ -95,11 +101,12 @@ def signup():
         # add the new username and hashed password to the database
         username = request.form['username']
         password = request.form['password']
+        adress = request.form['adress']
         # hash it with the cool secutiry function
         hashed_password = generate_password_hash(password)
         # write it as a new user to the database
-        sql = "INSERT INTO user (username,password) VALUES (?,?)"
-        query_db(sql, (username, hashed_password))
+        sql = "INSERT INTO user (username,password,adress) VALUES (?,?,?)"
+        query_db(sql, (username, hashed_password, adress))
         # message flashes exist in the base.html template and give user feedback
         flash("Sign Up Successful")
         return redirect("/login")
@@ -114,15 +121,13 @@ def logout():
     return redirect('/')
 
 
-
 @app.post('/cart')
 def cart():
     id = request.form['id']
+    name = request.form['name']
     if "cart" in session:
-        print("already exists")
-        print(session['cart'])
         values = session['cart']
-        values.append(id)
+        values.append((id, name))
         session['cart'] = values
         print(session['cart'])
     else:

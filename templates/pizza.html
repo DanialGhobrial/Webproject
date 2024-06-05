@@ -10,9 +10,14 @@
 
     <form action="/cart" method="post">
       <input type="hidden" name="id" value="{{pizza[0]}}">
+      <input type="hidden" name="name" value="{{pizza[1]}}">
       <button>Add To Cart</button>
     </form>
   </div>
 
+  {% for item in session[('cart')]%}
+  <h1>{{item[1]}}</h1>
+
+  {% endfor %}
    
 {% endblock %}

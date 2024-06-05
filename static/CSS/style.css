@@ -21,6 +21,7 @@ body {
   align-items: center;
   height: 60px;
   margin: 20px 0;
+  
 }
 
 /* Navbar links */
@@ -42,6 +43,10 @@ body {
 .navbar a.active {
   background-color: #2cc3ff;
   color: #fff;
+}
+
+.navbar img {
+  width: 30px;
 }
 
 
@@ -66,3 +71,4 @@ body {
   padding-top: 10%;
   float: center;
 }
+
