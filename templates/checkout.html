@@ -1,11 +1,14 @@
 {% extends "layout.html" %}
 {% block content %}
 
+<h1>Your Order</h1>
+{% for item in session[('cart')]%}
+<h5>{{item[1]}}</h5>
 
-<form action="/" method="post">
-    <input type="hidden" name="cart" value="">
+{% endfor %}
+<form action="/submit" method="post">
     <button>Submit Order To Store</button>
   </form>
 </div>
-
+<a href="/clearcart"><button>Clear cart</button></a>
 {% endblock %}

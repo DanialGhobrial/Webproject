@@ -120,6 +120,11 @@ def logout():
     session['cart'] = None
     return redirect('/')
 
+@app.route('/clearcart')
+def clearcart():
+    session['cart'] = []
+    return redirect('/menu')
+
 
 @app.post('/cart')
 def cart():
@@ -133,6 +138,17 @@ def cart():
     else:
         print("No cart in session")
     return redirect("/menu")
+
+
+@app.post('/submit')
+def submit():
+    conn = sqlite3.connect('Database/pizza.db')
+    cart = session['cart'][0]
+    userid = session['user'][0]
+    cursor = conn.cursor() 
+    cursor.execute('INSERT INTO Orders (cart, userid) VALUES (?, ?)', (cart, userid))
+    conn.commit() 
+    return redirect("/clearcart")
 
 
 if __name__ == "__main__":
