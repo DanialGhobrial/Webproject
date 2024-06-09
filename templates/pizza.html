@@ -2,22 +2,29 @@
 {% block content %}
 <div class="image11">
     <img src="{{ pizza[3] }}">
-  </div>
+</div>
 
-  <div class="text11">
-    <h2>{{pizza[1]}}</h2>
-    <h1>${{pizza[2]}}</h1>
+<div class="text11">
+    <h2>{{ pizza[1] }}</h2>
+    <h1>${{ pizza[2] }}</h1>
 
     <form action="/cart" method="post">
-      <input type="hidden" name="id" value="{{pizza[0]}}">
-      <input type="hidden" name="name" value="{{pizza[1]}}">
-      <button>Add To Cart</button>
+        <input type="hidden" name="id" value="{{ pizza[0] }}">
+        <input type="hidden" name="name" value="{{ pizza[1] }}">
+        
+        <label for="base">Choose a base:</label>
+        <select name="base_id" required>
+            {% for base in bases %}
+            <option value="{{ base[0] }}">{{ base[1] }} - ${{ base[2] }}</option>
+            {% endfor %}
+        </select>
+        
+        <button>Add To Cart</button>
     </form>
-  </div>
-  <h1>Your Cart:</h1>
-  {% for item in session[('cart')]%}
-  <h1>{{item[1]}}</h1>
+</div>
 
-  {% endfor %}
-   
+<h1>Your Cart:</h1>
+{% for item in session['cart'] %}
+    <h1>{{ item[1] }} - Base: {{ item[3] }}</h1>
+{% endfor %}
 {% endblock %}

@@ -1,11 +1,11 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<h1>Your Order</h1>
-{% for item in session[('cart')]%}
-<h5>{{item[1]}}</h5>
-
+<h1>Your Order:</h1>
+{% for item in session['cart'] %}
+    <h1>{{ item[1] }} - Base: {{ item[3] }}</h1>
 {% endfor %}
+
 <form action="/submit" method="post">
     <button>Submit Order To Store</button>
   </form>

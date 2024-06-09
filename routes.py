@@ -27,43 +27,62 @@ def home():
 # Route for Pizza.html Page
 @app.route('/pizza/<int:id>')
 def pizza(id):
-    conn = sqlite3.connect('Database/pizza.db')
+    conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
+    # Fetch the selected pizza
     cur.execute('SELECT * FROM Pizza WHERE id=?', (id,))
     pizza = cur.fetchone()
-    cur.execute('SELECT * FROM Base WHERE id=?', (pizza[2],))
-    base = cur.fetchone()
-    cur.execute('SELECT * FROM Pizza WHERE id=?', (pizza[1],))
-    topping = cur.fetchone()
-    return render_template('pizza.html', pizza=pizza, base=base, topping=topping)
+    # Fetch all bases
+    cur.execute('SELECT * FROM Base')
+    bases = cur.fetchall()
+    return render_template('pizza.html', pizza=pizza, bases=bases)
 
 
-# Route for Checkout page
-@app.route('/checkout')
-def checkout():
-    return render_template("checkout.html", title="checkout")
-
-
-# Route for offers page
-@app.route('/offers')
-def offers():
-    return render_template("offers.html", title="Contact")
-
-
-# Route For Stores Page
-@app.route('/stores')
-def stores():
-    return render_template("stores.html", title="About")
-
+# Route for Pizzaout.html Page
+@app.route('/pizzaout/<int:id>')
+def pizzaout(id):
+    conn = sqlite3.connect(DATABASE)
+    cur = conn.cursor()
+    # Fetch the selected pizza
+    cur.execute('SELECT * FROM Pizza WHERE id=?', (id,))
+    pizza = cur.fetchone()
+    # Fetch all bases
+    cur.execute('SELECT * FROM Base')
+    bases = cur.fetchall()
+    return render_template('pizzaout.html', pizza=pizza, bases=bases)
 
 # Route for menu page
 @app.route('/menu')
 def menu():
-    conn = sqlite3.connect('Database/pizza.db')
+    conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
     cur.execute('SELECT * FROM Pizza')
     results = cur.fetchall()
     return render_template('menu.html', results=results)
+
+
+@app.route('/menuout')
+def menuout():
+    conn = sqlite3.connect(DATABASE)
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM Pizza')
+    results = cur.fetchall()
+    return render_template('menuout.html', results=results)
+
+
+@app.route('/offers')
+def offers():
+    return render_template("offers.html", title="Offers")
+
+
+@app.route('/stores')
+def stores():
+    return render_template("stores.html", title="Stores")
+
+
+@app.route('/checkout')
+def checkout():
+    return render_template("checkout.html", title="Checkout")
 
 
 @app.route('/login', methods=["GET", "POST"])
@@ -90,7 +109,7 @@ def login():
                 flash("Password incorrect")
         else:
             flash("Username does not exist")
-    # render this template regardles of get/post
+    # render this template regardless of get/post
     return render_template('login.html')
 
 
@@ -101,12 +120,12 @@ def signup():
         # add the new username and hashed password to the database
         username = request.form['username']
         password = request.form['password']
-        adress = request.form['adress']
-        # hash it with the cool secutiry function
+        address = request.form['address']
+        # hash it with the cool security function
         hashed_password = generate_password_hash(password)
         # write it as a new user to the database
-        sql = "INSERT INTO user (username,password,adress) VALUES (?,?,?)"
-        query_db(sql, (username, hashed_password, adress))
+        sql = "INSERT INTO user (username,password,address) VALUES (?,?,?)"
+        query_db(sql, (username, hashed_password, address))
         # message flashes exist in the base.html template and give user feedback
         flash("Sign Up Successful")
         return redirect("/login")
@@ -120,6 +139,7 @@ def logout():
     session['cart'] = None
     return redirect('/')
 
+
 @app.route('/clearcart')
 def clearcart():
     session['cart'] = []
@@ -128,26 +148,38 @@ def clearcart():
 
 @app.post('/cart')
 def cart():
-    id = request.form['id']
-    name = request.form['name']
+    pizza_id = request.form['id']
+    pizza_name = request.form['name']
+    base_id = request.form['base_id']
+
+    # Fetch base name using base_id
+    conn = sqlite3.connect(DATABASE)
+    cur = conn.cursor()
+    cur.execute('SELECT * FROM Base WHERE id=?', (base_id,))
+    base = cur.fetchone()
+    base_name = base[1]
+
     if "cart" in session:
-        values = session['cart']
-        values.append((id, name))
-        session['cart'] = values
-        print(session['cart'])
+        cart = session['cart']
+        cart.append((pizza_id, pizza_name, base_id, base_name))
+        session['cart'] = cart
     else:
-        print("No cart in session")
+        session['cart'] = [(pizza_id, pizza_name, base_id, base_name)]
+
     return redirect("/menu")
 
 
 @app.post('/submit')
 def submit():
-    conn = sqlite3.connect('Database/pizza.db')
-    cart = session['cart'][0]
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    cart = session['cart']
     userid = session['user'][0]
-    cursor = conn.cursor() 
-    cursor.execute('INSERT INTO Orders (cart, userid) VALUES (?, ?)', (cart, userid))
-    conn.commit() 
+    for item in cart:
+        pizza_id, _, base_id, _ = item
+        cursor.execute('INSERT INTO Orders (userid, pizzaid, baseid) VALUES (?, ?, ?)', (userid, pizza_id, base_id))
+    conn.commit()
+    conn.close()
     return redirect("/clearcart")
 
 

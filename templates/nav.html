@@ -1,11 +1,10 @@
 <div class="navbar">
-    {% if user in session %}
+    {% if 'user' not in session %}
     <a href="/" class="active">Home</a>
-    <a href="/menu" class="active">Menu</a>
+    <a href="/menuout" class="active">Menu</a>
     <a href="/offers" class="active">Offers</a>
     <a href="/stores" class="active">Stores</a>
     <a href="/login" class="active">Order Now</a>
-    <a href="/checkout" class="img"><img src="/static/Images/checkout.png" alt="checkout"></a>
     {% else %}
     <a href="/" class="active">Home</a>
     <a href="/menu" class="active">Menu</a>
