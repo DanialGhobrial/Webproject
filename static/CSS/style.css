@@ -8,12 +8,6 @@ body {
   line-height: 1.6;
 }
 
-/* Image */
-img {
-  width: 30%;
-  height: auto;
-  position: center;
-}
 
 /* Navbar */
 .navbar {
@@ -80,8 +74,8 @@ img {
 
 /* BUTTON STYLES */
 button {
-  background-color: #2cc3ff;
-  color: white;
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
   border: none;
   border-radius: 5px;
   padding: 10px 20px;
@@ -91,7 +85,7 @@ button {
 }
 
 button:hover {
-  background-color: #1ea1d8;
+  background-color: #1ed84d;
   transform: scale(1.05);
 }
 
@@ -129,10 +123,27 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
 
 .pizzapage {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 2fr 1fr 2fr;
+  width: 100%;
+}
+ 
+
+.gridmenu {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  gap: 10px;
+  background-color: #ffffff;
+  padding: 10px;
 }
 
-.secondgrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+.gridmenu img {
+  height: 250px;
+  margin: auto;
+}
+
+.gridmenu > div {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: 1px solid black;
+  text-align: center;
+  font-size: 30px;
 }

@@ -4,12 +4,7 @@
     <div class="secondgrid">
     <div class="image11">
         <img src="{{ pizza[3] }}">
-        <div class="text11">
-            <h2>{{ pizza[1] }}</h2>
-            <h1>${{ pizza[2] }}</h1>
-    
-           
-        </div>
+       
         <form action="/cart" method="post">
             <input type="hidden" name="id" value="{{ pizza[0] }}">
             <input type="hidden" name="name" value="{{ pizza[1] }}">
@@ -26,7 +21,12 @@
     </div>
     </div>
 
+    <div class="text11">
+        <h2>{{ pizza[1] }}</h2>
+        <h1>${{ pizza[2] }}</h1>
 
+       
+    </div>
    
     <div>
     <h1>Your Cart:</h1>

@@ -51,6 +51,7 @@ def pizzaout(id):
     bases = cur.fetchall()
     return render_template('pizzaout.html', pizza=pizza, bases=bases)
 
+
 # Route for menu page
 @app.route('/menu')
 def menu():
