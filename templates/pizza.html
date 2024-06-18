@@ -2,37 +2,48 @@
 {% block content %}
 <div class="pizzapage">
     <div class="secondgrid">
-    <div class="image11">
-        <img src="{{ pizza[3] }}">
-       
-        <form action="/cart" method="post">
-            <input type="hidden" name="id" value="{{ pizza[0] }}">
-            <input type="hidden" name="name" value="{{ pizza[1] }}">
+        <div class="image11">
+            <img src="{{ pizza[3] }}">
+           
+            <form action="/cart" method="post">
+                <input type="hidden" name="id" value="{{ pizza[0] }}">
+                <input type="hidden" name="name" value="{{ pizza[1] }}">
 
-            <label for="base">Choose a base:</label>
-            <select name="base_id" required>
-                {% for base in bases %}
-                <option value="{{ base[0] }}">{{ base[1] }} - ${{ base[2] }}</option>
+                <label for="base">Choose a base:</label>
+                <select name="base_id" required>
+                    {% for base in bases %}
+                    <option value="{{ base[0] }}">{{ base[1] }} - ${{ base[2] }}</option>
+                    {% endfor %}
+                </select>
+
+                <button>Add To Cart</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="cardcontainer">
+            <h4><b>{{ pizza[1] }} - ${{ pizza[2] }}</b></h4>
+            <br>
+            <br>
+            <h3><b>Ingredients:</b></h3>
+            <ul>
+                {% for ingredient in ingredients %}
+                <li>{{ ingredient }}</li>
                 {% endfor %}
-            </select>
-
-            <button>Add To Cart</button>
-        </form>
-    </div>
+            </ul>
+        </div>
     </div>
 
-    <div class="text11">
-        <h2>{{ pizza[1] }}</h2>
-        <h1>${{ pizza[2] }}</h1>
-
-       
-    </div>
-   
     <div>
-    <h1>Your Cart:</h1>
-    {% for item in session['cart'] %}
-    <h1>{{ item[1] }} - Base: {{ item[3] }}</h1>
-    {% endfor %}
+        <div class="card">
+            <div class="cardcontainer">
+                <h1>Your Cart:</h1>
+                {% for item in session['cart'] %}
+                <h1>{{ item[1] }} - Base: {{ item[3] }}</h1>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

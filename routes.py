@@ -24,18 +24,35 @@ def home():
     return render_template("home.html", title="Home")
 
 
-# Route for Pizza.html Page
+# Route for pizza Page
 @app.route('/pizza/<int:id>')
 def pizza(id):
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
-    # Fetch the selected pizza
-    cur.execute('SELECT * FROM Pizza WHERE id=?', (id,))
-    pizza = cur.fetchone()
-    # Fetch all bases
-    cur.execute('SELECT * FROM Base')
-    bases = cur.fetchall()
-    return render_template('pizza.html', pizza=pizza, bases=bases)
+    try:
+        # Fetch the selected pizza details
+        cur.execute('SELECT * FROM Pizza WHERE id=?', (id,))
+        pizza = cur.fetchone()
+        if not pizza:
+            raise ValueError(f"No pizza found with ID {id}")
+        # Fetch ingredients of the selected pizza
+        cur.execute('''
+            SELECT Ingredients.Name
+            FROM Ingredients
+            JOIN PizzaIngredients ON Ingredients.ID = PizzaIngredients.IngredientID
+            WHERE PizzaIngredients.PizzaID = ?
+        ''', (id,))
+        ingredients = [row[0] for row in cur.fetchall()]
+        # Fetch all bases (assuming this is unchanged)
+        cur.execute('SELECT * FROM Base')
+        bases = cur.fetchall()
+        conn.close()
+        return render_template('pizza.html', pizza=pizza, bases=bases, ingredients=ingredients)
+    except Exception as e:
+        print(f"Error fetching pizza details: {e}")
+        conn.close()
+        return render_template('error.html', message="An error occurred while fetching pizza details.")
+
 
 
 # Route for Pizzaout.html Page
