@@ -164,6 +164,22 @@ def clearcart():
     return redirect('/menu')
 
 
+@app.post('/menucart')
+def menucart():
+    pizza_id = request.form['id']
+    pizza_name = request.form['name']
+    base_id = ['base[1]']
+
+    if "cart" in session:
+        cart = session['cart']
+        cart.append((pizza_id, pizza_name, base_id))
+        session['cart'] = cart
+    else:
+        session['cart'] = [(pizza_id, pizza_name, base_id)]
+
+    return redirect("/menu")
+
+
 @app.post('/cart')
 def cart():
     pizza_id = request.form['id']

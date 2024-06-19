@@ -38,10 +38,12 @@
     <div>
         <div class="card">
             <div class="cardcontainer">
-                <h1>Your Cart:</h1>
+                <div class="yourcart">
+                <h1>Your Cart</h1>
                 {% for item in session['cart'] %}
-                <h1>{{ item[1] }} - Base: {{ item[3] }}</h1>
+                <h3>{{ item[1] }} - Base: {{ item[3] }}</h3>
                 {% endfor %}
+                 </div>
             </div>
         </div>
     </div>

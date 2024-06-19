@@ -1,10 +1,13 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="grid-container">
+<div class="gridmenu">
 {% for item in results%}
-
-   <a href="/pizzaout/{{item[0]}}"><img src="{{ item[3] }}">
-   </a>
+<div class="middleimage">
+   <a href="/pizza/{{item[0]}}"><img src="{{ item[3] }}">
+   
+      <a><b>{{item[1]}}</b></a>
+    </a>
+   </div>
       {% endfor %}
    </div>   
 {% endblock %}
