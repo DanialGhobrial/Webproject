@@ -21,7 +21,17 @@ def query_db(sql, args=(), one=False):
 # Route for Home Page
 @app.route('/')
 def home():
-    return render_template("home.html", title="Home")
+    random_data = get_random_data()
+    return render_template('home.html', data=random_data)
+
+
+# Function to get random data from the 'Movie' table
+def get_random_data():
+    with sqlite3.connect("Database/pizza.db") as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM Pizza ORDER BY RANDOM() LIMIT 4")
+        data = cursor.fetchall()
+    return data
 
 
 # Route for pizza Page
@@ -54,7 +64,6 @@ def pizza(id):
         return render_template('error.html', message="An error occurred while fetching pizza details.")
 
 
-
 # Route for Pizzaout.html Page
 @app.route('/pizzaout/<int:id>')
 def pizzaout(id):
@@ -76,9 +85,13 @@ def menu():
     cur = conn.cursor()
     cur.execute('SELECT * FROM Pizza')
     results = cur.fetchall()
-    return render_template('menu.html', results=results)
+    cur.execute('SELECT * FROM Base')
+    bases = cur.fetchall()
+    conn.close()
+    return render_template('menu.html', results=results, bases=bases)
 
 
+# Route for menu page when loged out 
 @app.route('/menuout')
 def menuout():
     conn = sqlite3.connect(DATABASE)
@@ -88,6 +101,7 @@ def menuout():
     return render_template('menuout.html', results=results)
 
 
+# Route for offers Page
 @app.route('/offers')
 def offers():
     return render_template("offers.html", title="Offers")
@@ -168,7 +182,7 @@ def clearcart():
 def menucart():
     pizza_id = request.form['id']
     pizza_name = request.form['name']
-    base_id = ['base[1]']
+    base_id = 1
 
     if "cart" in session:
         cart = session['cart']
@@ -215,6 +229,24 @@ def submit():
     conn.commit()
     conn.close()
     return redirect("/clearcart")
+
+
+# Custom error handling for page not found errors
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('error.html', error='Page not found'), 404
+
+
+# Custom error handling for 500 (Internal Server Error) error
+@app.errorhandler(500)
+def internal_server_error(error):
+    return render_template('error.html', error='Internal server error'), 500
+
+
+# Custom error handling for other unexpected errors
+@app.errorhandler(Exception)
+def unexpected_error(error):
+    return render_template('error.html', error='Something went wrong'), 500
 
 
 if __name__ == "__main__":

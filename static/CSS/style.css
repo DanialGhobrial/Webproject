@@ -161,14 +161,15 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
 .gridmenu {
   display: grid;
   grid-template-columns: auto auto auto auto;
-  gap: 10px;
+  gap: 20px;
   background-color: #ffffff;
-  padding: 10px;
+  padding: auto;
+  width: 90%;
+  margin: auto;
 }
 
 .gridmenu img {
-  height: 250px;
-  margin: auto;
+  width: 50%;
 }
 
 .gridmenu > div {
@@ -179,6 +180,10 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
 
 .middleimage {
   margin: auto;
+}
+
+.middleimage form {
+  width: 50%;
 }
 
 .menuform {
@@ -235,4 +240,43 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
 .ourstore {
   width:50%;
   margin: auto;
+}
+
+
+/* Error page styles */
+body.error-page {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 50px;
+  background-color: #f0f0f0;
+}
+
+.error-page h1 {
+  color: #f44336;
+}
+
+.error-page p {
+  color: #666;
+}
+
+.error-page .home-button,
+.error-page .reload-button {
+  display: inline-block;
+  background-color: #4CAF50;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.error-page .home-button:hover,
+.error-page .reload-button:hover {
+  background-color: #45a049;
+}
+
+.error-page .reload-button {
+  background-color: #2196F3;
+  margin-left: 10px;
 }

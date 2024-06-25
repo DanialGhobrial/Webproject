@@ -1,4 +1,27 @@
 {% extends "layout.html" %}
 {% block content %}
-home
+
+<h2><b>Pizzas You May Like</b></h2>
+
+{% for pizza in data %}
+
+        <div class="gridmenu">
+            <div class="middleimage">
+               <a href="/pizza/{{pizza[0]}}"><img src="{{ pizza[3] }}">
+            
+                  <form class="menuform" action="/menucart" method="post">
+                     <input type="hidden" name="id" value="{{ pizza[0] }}">
+                     <input type="hidden" name="name" value="{{ pizza[1] }}">
+                     <div class="middletext">
+                     <a><b>{{pizza[1]}}</b></a>
+                  </div>
+                  <button>Add To Cart</button>
+                 </form>
+                 
+                </a>
+               </div>
+                  {% endfor %}
+               </div>  
+               
+<button><a href="/" Refresh Selection></button>
 {% endblock %}

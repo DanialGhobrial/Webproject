@@ -4,17 +4,21 @@
 {% for item in results%}
 <div class="middleimage">
    <a href="/pizza/{{item[0]}}"><img src="{{ item[3] }}">
-
-      <form class="menuform" action="/menucart" method="post">
+   </a>
+      <form action="/cart" method="post">
+         <label><b>{{item[1]}}</b></label>
          <input type="hidden" name="id" value="{{ item[0] }}">
          <input type="hidden" name="name" value="{{ item[1] }}">
-         <div class="middletext">
-         <a><b>{{item[1]}}</b></a>
-      </div>
-      <button>Add To Cart</button>
+         <select name="base_id" required>
+             {% for base in bases %}
+             <option value="{{ base[0] }}">{{ base[1] }} - ${{ base[2] }}</option>
+             {% endfor %}
+         </select>
+
+         <button>Add To Cart</button>
      </form>
      
-    </a>
+   
    </div>
       {% endfor %}
    </div>   
