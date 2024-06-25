@@ -1,27 +1,33 @@
 {% extends "layout.html" %}
 {% block content %}
-
-<h2><b>Pizzas You May Like</b></h2>
-
-{% for pizza in data %}
-
-        <div class="gridmenu">
-            <div class="middleimage">
-               <a href="/pizza/{{pizza[0]}}"><img src="{{ pizza[3] }}">
-            
-                  <form class="menuform" action="/menucart" method="post">
-                     <input type="hidden" name="id" value="{{ pizza[0] }}">
-                     <input type="hidden" name="name" value="{{ pizza[1] }}">
-                     <div class="middletext">
-                     <a><b>{{pizza[1]}}</b></a>
-                  </div>
-                  <button>Add To Cart</button>
-                 </form>
-                 
-                </a>
-               </div>
-                  {% endfor %}
-               </div>  
-               
-<button><a href="/" Refresh Selection></button>
+<div class="home-container">
+  <h2 class="section-title"><b>Pizzas You May Like</b></h2>
+  <div class="pizzas-grid">
+    {% for pizza in data %}
+      <div class="pizza-card">
+        <div class="pizza-image">
+          <a href="/pizza/{{ pizza[0] }}"><img src="{{ pizza[3] }}" alt="{{ pizza[1] }}"></a>
+        </div>
+        <div class="pizza-info">
+          <h3 class="pizza-title">{{ pizza[1] }}</h3>
+          <form class="add-to-cart-form" action="/menucart" method="post">
+            <input type="hidden" name="id" value="{{ pizza[0] }}">
+            <input type="hidden" name="name" value="{{ pizza[1] }}">
+            <label for="base">Choose a base:</label>
+            <select name="base_id" required>
+                {% for base in bases %}
+                <option value="{{ base[0] }}">{{ base[1] }} - ${{ base[2] }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="add-to-cart-button">Add To Cart</button>
+          </form>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  <div class="home-buttons">
+    <button class="refresh-button"><a href="/">Refresh Selection</a></button>
+    <button class="menu-button"><a href="/menu">Check Out Our Menu</a></button>
+  </div>
+</div>
 {% endblock %}

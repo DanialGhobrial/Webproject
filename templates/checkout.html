@@ -1,14 +1,23 @@
 {% extends "layout.html" %}
 {% block content %}
-
-<h1>Your Order:</h1>
-{% for item in session['cart'] %}
-    <h1>{{ item[1] }} - Base: {{ item[3] }}</h1>
-{% endfor %}
-
-<form action="/submit" method="post">
-    <button>Submit Order To Store</button>
+<div class="checkout-container">
+  <h2>Checkout</h2>
+  <div class="cart-items">
+    <ul>
+      {% for item in cart %}
+      <li>
+        <span>{{ item[1] }} with {{ item[3] }}</span>
+        <span>${{ "%.2f"|format(item[4]) }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="total-price">
+    <h3>Total: ${{ "%.2f"|format(total) }}</h3>
+  </div>
+  <form action="/submit" method="post">
+    <button type="submit">Submit Order</button>
   </form>
+  <a href="/clearcart" class="clear-cart-button"><button>Clear Cart</button></a>
 </div>
-<a href="/clearcart"><button>Clear cart</button></a>
 {% endblock %}

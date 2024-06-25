@@ -1,84 +1,55 @@
 /* GLOBAL STYLES */
 body {
-  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-  background-color: #ffffff;
-  color: #333333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  color: #343a40;
   margin: 0;
   padding: 0;
   line-height: 1.6;
 }
 
+a {
+  text-decoration: none;
+}
 
+/* NAVBAR STYLES */
 ul.topnav {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  overflow: auto;
-  background-color: #333;
-}
-
-ul.topnav li {float: left;}
-
-ul.topnav li a {
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-}
-
-ul.topnav li a:hover:not(.active) {background-color: #111;}
-
-ul.topnav li a.active {background-color: #04AA6D;
-}
-
-ul.topnav li.right {float: right;}
-
-ul.topnav img {
-  height: 24px;
-  padding: 0%;
-}
-
-/* Navbar */
-.navbar {
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 60px;
-  padding: 0 20px;
+  overflow: hidden;
+  background-color: #343a40;
   position: sticky;
   top: 0;
   z-index: 1000;
 }
 
-/* Navbar links */
-.navbar a {
-  color: #333;
-  text-decoration: none;
-  font-size: 18px;
-  padding: 10px 20px;
-  border-radius: 5px;
-  transition: background-color 0.2s, color 0.2s;
-  margin: 0 10px;
+ul.topnav li { 
+  float: left; 
 }
 
-/* Navbar link hover effect */
-.navbar a:hover {
-  background-color: #f0f0f0;
-  color: #ff6702;
-}
-
-/* Active navbar link */
-.navbar a.active {
-  background-color: #2cc3ff;
+ul.topnav li a {
+  display: block;
   color: #ffffff;
+  text-align: center;
+  padding: 14px 16px;
 }
 
-.navbar img {
-  width: 30px;
-  vertical-align: middle;
+ul.topnav li a:hover { 
+  background-color: #495057; 
+}
+
+ul.topnav li a.active { 
+  background-color: #007bff; 
+}
+
+ul.topnav li.right { 
+  float: right; 
+}
+
+ul.topnav img {
+  height: 24px;
+  padding: 0;
 }
 
 /* GRID STYLES */
@@ -89,48 +60,54 @@ ul.topnav img {
   padding: 20px;
 }
 
-/* Image in Grid */
+/* IMAGE STYLES */
 .image11 {
   width: 100%;
   height: auto;
   display: block;
 }
 
-/* Text in Grid */
-.text11 {
+.middleimage img {
+  width: 100%;
+  height: auto;
+}
+
+/* TEXT STYLES */
+.text11, .middletext {
   font-size: 20px;
   padding: 20px;
+  color: #343a40;
 }
 
 /* BUTTON STYLES */
 button {
-  background-color: #ffffff;
-  color: rgb(0, 0, 0);
+  background-color: #04AA6D;
+  color: #ffffff;
   border: none;
   border-radius: 5px;
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.2s, transform 0.2s;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
 button:hover {
-  background-color: #1ed84d;
+  background-color: #04AA6D;
   transform: scale(1.05);
 }
 
 button:active {
-  background-color: #148bb0;
+  background-color: #003f7f;
   transform: scale(1);
 }
 
-/* Form Styles */
+/* FORM STYLES */
 form {
   display: flex;
   flex-direction: column;
   gap: 15px;
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -147,108 +124,137 @@ input[type="text"], input[type="password"], input[type="email"], textarea {
 }
 
 input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus, textarea:focus {
-  border-color: #2cc3ff;
+  border-color: #007bff;
   outline: none;
 }
 
-.pizzapage {
-  display: grid;
-  grid-template-columns: 2fr 1fr 3fr;
-  width: 100%;
-}
- 
-
+/* MENU STYLES */
 .gridmenu {
   display: grid;
-  grid-template-columns: auto auto auto auto;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
-  background-color: #ffffff;
-  padding: auto;
-  width: 90%;
-  margin: auto;
+  padding: 20px;
 }
 
 .gridmenu img {
-  width: 50%;
+  width: 100%;
+  height: auto;
 }
 
 .gridmenu > div {
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: #ffffff;
   text-align: center;
-  font-size: 30px;
-}
-
-.middleimage {
-  margin: auto;
-}
-
-.middleimage form {
-  width: 50%;
-}
-
-.menuform {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  font-size: 20px;
   padding: 20px;
-  background-color: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.card {
-  /* Add shadows to create the "card" effect */
-  box-shadow: 0 1px 0px 0 rgba(0,0,0,0.2);
-  transition: 0.3s;
-}
-
-/* On mouse-over, add a deeper shadow */
-.card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
-
-/* Add some padding inside the card container */
-.cardcontainer {
-  padding: 2px 16px;
-  width: auto;
-  height: 500px;
-}
-
-.middletext {
-  color: #333;
-}
-
-.yourcart {
-  text-align: center;
-}
-
-.storecard {
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-  transition: 0.3s;
+.middleimage form {
   width: 100%;
-}
-
-.storecard:hover {
-  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-}
-
-.storecontainer {
-  padding: 2px 16px;
-  width: 100%;
-}
-
-.ourstore {
-  width:50%;
   margin: auto;
 }
 
+.menuform, .menuform select {
+  width: 100%;
+}
 
-/* Error page styles */
+/* CARD STYLES */
+.card {
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  transition: 0.3s;
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.cardcontainer {
+  padding: 20px;
+}
+
+.cardcontainer h4, .cardcontainer h3, .cardcontainer h1 {
+  color: #343a40;
+}
+
+.cardcontainer ul {
+  list-style: none;
+  padding: 0;
+}
+
+.cardcontainer ul li {
+  padding: 5px 0;
+}
+
+/* STORE STYLES */
+.storecard {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: 0.3s;
+  width: 100%;
+  border-radius: 10px;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+.storecard:hover {
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.storecontainer {
+  padding: 20px;
+}
+
+.ourstore {
+  width: 80%;
+  margin: 40px auto;
+  text-align: center;
+}
+
+/* PIZZA PAGE STYLES */
+.pizzapage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  padding: 40px;
+  background-color: #ffffff;
+}
+
+.pizzapage .image11 img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pizzapage .card {
+  width: 100%;
+  max-width: 500px;
+}
+
+.pizzapage .cardcontainer {
+  padding: 20px;
+}
+
+.pizzapage .yourcart {
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+}
+
+.pizzapage .yourcart h1, .pizzapage .yourcart h3 {
+  margin: 10px 0;
+  color: #343a40;
+}
+
+/* ERROR PAGE STYLES */
 body.error-page {
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
   margin: 50px;
-  background-color: #f0f0f0;
+  background-color: #f8f9fa;
 }
 
 .error-page h1 {
@@ -262,21 +268,186 @@ body.error-page {
 .error-page .home-button,
 .error-page .reload-button {
   display: inline-block;
-  background-color: #4CAF50;
-  color: #fff;
+  background-color: #007bff;
+  color: #ffffff;
   padding: 10px 20px;
   border-radius: 5px;
   text-decoration: none;
   margin-top: 20px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .error-page .home-button:hover,
 .error-page .reload-button:hover {
-  background-color: #45a049;
+  background-color: #0056b3;
 }
 
 .error-page .reload-button {
-  background-color: #2196F3;
-  margin-left: 10px;
+  background-color: #28a745;
+}
+
+/* Checkout Styles */
+.checkout-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.checkout-container h1 {
+  color: #333333;
+  margin-bottom: 20px;
+}
+
+.order-items {
+  margin-bottom: 20px;
+}
+
+.order-item {
+  background-color: #ffffff;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.checkout-form {
+  margin-bottom: 20px;
+}
+
+.checkout-button, .clear-cart-button button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.checkout-button:hover, .clear-cart-button button:hover {
+  background-color: #028a5e;
+}
+
+.clear-cart-button button {
+  background-color: #f44336;
+}
+
+.clear-cart-button button:hover {
+  background-color: #d32f2f;
+}
+
+
+/* Home Page Styles */
+.home-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+  color: #333333;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.pizzas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.pizza-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  text-align: center;
+  transition: box-shadow 0.3s;
+}
+
+.pizza-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pizza-image img {
+  width: 100%;
+  height: auto;
+}
+
+.pizza-info {
+  padding: 15px;
+}
+
+.pizza-title {
+  color: #333333;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.add-to-cart-form {
+  margin-top: 10px;
+}
+
+.add-to-cart-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #666;
+}
+
+.add-to-cart-form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.add-to-cart-button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-to-cart-button:hover {
+  background-color: #028a5e;
+}
+
+.home-buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.home-buttons button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin: 0 10px;
+}
+
+.home-buttons button a {
+  color: white;
+  text-decoration: none;
+}
+
+.home-buttons button:hover {
+  background-color: #028a5e;
 }

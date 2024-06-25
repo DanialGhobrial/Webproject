@@ -21,8 +21,12 @@ def query_db(sql, args=(), one=False):
 # Route for Home Page
 @app.route('/')
 def home():
+    conn = sqlite3.connect(DATABASE)
+    cur = conn.cursor()
     random_data = get_random_data()
-    return render_template('home.html', data=random_data)
+    cur.execute('SELECT * FROM Base')
+    bases = cur.fetchall()
+    return render_template('home.html', data=random_data, bases=bases)
 
 
 # Function to get random data from the 'Movie' table
@@ -114,7 +118,14 @@ def stores():
 
 @app.route('/checkout')
 def checkout():
-    return render_template("checkout.html", title="Checkout")
+    if "cart" not in session or not session['cart']:
+        return render_template("checkout.html", title="Checkout", total=0)
+
+    cart = session['cart']
+    total = sum(float(item[-1]) for item in cart)  # Ensure prices are treated as floats
+    return render_template("checkout.html", title="Checkout", cart=cart, total=total)
+
+
 
 
 @app.route('/login', methods=["GET", "POST"])
@@ -182,16 +193,28 @@ def clearcart():
 def menucart():
     pizza_id = request.form['id']
     pizza_name = request.form['name']
-    base_id = 1
+    base_id = 1  # Default base ID
+
+    # Fetch the price of the selected pizza and base
+    conn = sqlite3.connect(DATABASE)
+    cur = conn.cursor()
+    cur.execute('SELECT price FROM Pizza WHERE id=?', (pizza_id,))
+    pizza_price = float(cur.fetchone()[0])  # Convert to float
+    cur.execute('SELECT price FROM Base WHERE id=?', (base_id,))
+    base_price = float(cur.fetchone()[0])  # Convert to float
+    conn.close()
+
+    item_price = pizza_price + base_price
 
     if "cart" in session:
         cart = session['cart']
-        cart.append((pizza_id, pizza_name, base_id))
+        cart.append((pizza_id, pizza_name, base_id, item_price))
         session['cart'] = cart
     else:
-        session['cart'] = [(pizza_id, pizza_name, base_id)]
+        session['cart'] = [(pizza_id, pizza_name, base_id, item_price)]
 
     return redirect("/menu")
+
 
 
 @app.post('/cart')
@@ -200,21 +223,29 @@ def cart():
     pizza_name = request.form['name']
     base_id = request.form['base_id']
 
-    # Fetch base name using base_id
+    # Fetch base name and price using base_id
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
-    cur.execute('SELECT * FROM Base WHERE id=?', (base_id,))
+    cur.execute('SELECT name, price FROM Base WHERE id=?', (base_id,))
     base = cur.fetchone()
-    base_name = base[1]
+    base_name, base_price = base[0], float(base[1])  # Convert to float
+
+    # Fetch pizza price
+    cur.execute('SELECT price FROM Pizza WHERE id=?', (pizza_id,))
+    pizza_price = float(cur.fetchone()[0])  # Convert to float
+    conn.close()
+
+    item_price = pizza_price + base_price
 
     if "cart" in session:
         cart = session['cart']
-        cart.append((pizza_id, pizza_name, base_id, base_name))
+        cart.append((pizza_id, pizza_name, base_id, base_name, item_price))
         session['cart'] = cart
     else:
-        session['cart'] = [(pizza_id, pizza_name, base_id, base_name)]
+        session['cart'] = [(pizza_id, pizza_name, base_id, base_name, item_price)]
 
     return redirect("/menu")
+
 
 
 @app.post('/submit')
@@ -224,7 +255,7 @@ def submit():
     cart = session['cart']
     userid = session['user'][0]
     for item in cart:
-        pizza_id, _, base_id, _ = item
+        pizza_id, _, base_id, _, _= item
         cursor.execute('INSERT INTO Orders (userid, pizzaid, baseid) VALUES (?, ?, ?)', (userid, pizza_id, base_id))
     conn.commit()
     conn.close()
