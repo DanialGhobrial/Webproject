@@ -10,7 +10,7 @@
         </div>
         <div class="pizza-info">
           <h3 class="pizza-title">{{ pizza[1] }}</h3>
-          <form class="add-to-cart-form" action="/menucart" method="post">
+          <form class="add-to-cart-form" action="/cart" method="post">
             <input type="hidden" name="id" value="{{ pizza[0] }}">
             <input type="hidden" name="name" value="{{ pizza[1] }}">
             <label for="base">Choose a base:</label>
@@ -26,8 +26,8 @@
     {% endfor %}
   </div>
   <div class="home-buttons">
-    <button class="refresh-button"><a href="/">Refresh Selection</a></button>
-    <button class="menu-button"><a href="/menu">Check Out Our Menu</a></button>
+    <a href="/"> <button class="refresh-button">Refresh Selection</button></a>
+    <a href="/menu"> <button class="menu-button">Check Out Our Menu</button> </a>
   </div>
 </div>
 {% endblock %}

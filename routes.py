@@ -126,8 +126,6 @@ def checkout():
     return render_template("checkout.html", title="Checkout", cart=cart, total=total)
 
 
-
-
 @app.route('/login', methods=["GET", "POST"])
 def login():
     # if the user posts a username and password
@@ -135,7 +133,7 @@ def login():
         # get the username and password
         username = request.form['username']
         password = request.form['password']
-        # try to find this user in the database- note- just keepin' it simple so usernames must be unique
+        # try to find this user in the database
         sql = "SELECT * FROM user WHERE username = ?"
         user = query_db(sql=sql, args=(username,), one=True)
         if user:
@@ -169,7 +167,6 @@ def signup():
         # write it as a new user to the database
         sql = "INSERT INTO user (username,password,address) VALUES (?,?,?)"
         query_db(sql, (username, hashed_password, address))
-        # message flashes exist in the base.html template and give user feedback
         flash("Sign Up Successful")
         return redirect("/login")
     return render_template('signup.html')
@@ -177,7 +174,7 @@ def signup():
 
 @app.route('/logout')
 def logout():
-    # just clear the username from the session and redirect back to the home page
+    # clear the username from the session and redirect back to the home page
     session['user'] = None
     session['cart'] = None
     return redirect('/')
@@ -216,7 +213,6 @@ def menucart():
     return redirect("/menu")
 
 
-
 @app.post('/cart')
 def cart():
     pizza_id = request.form['id']
@@ -247,7 +243,6 @@ def cart():
     return redirect("/menu")
 
 
-
 @app.post('/submit')
 def submit():
     conn = sqlite3.connect(DATABASE)
@@ -255,7 +250,7 @@ def submit():
     cart = session['cart']
     userid = session['user'][0]
     for item in cart:
-        pizza_id, _, base_id, _, _= item
+        pizza_id, _, base_id, _, _ = item
         cursor.execute('INSERT INTO Orders (userid, pizzaid, baseid) VALUES (?, ?, ?)', (userid, pizza_id, base_id))
     conn.commit()
     conn.close()
@@ -265,19 +260,19 @@ def submit():
 # Custom error handling for page not found errors
 @app.errorhandler(404)
 def page_not_found(error):
-    return render_template('error.html', error='Page not found'), 404
+   return render_template('error.html', error='Page not found'), 404
 
 
 # Custom error handling for 500 (Internal Server Error) error
 @app.errorhandler(500)
 def internal_server_error(error):
-    return render_template('error.html', error='Internal server error'), 500
+  return render_template('error.html', error='Internal server error'), 500
 
 
 # Custom error handling for other unexpected errors
 @app.errorhandler(Exception)
 def unexpected_error(error):
-    return render_template('error.html', error='Something went wrong'), 500
+   return render_template('error.html', error='Something went wrong'), 500
 
 
 if __name__ == "__main__":

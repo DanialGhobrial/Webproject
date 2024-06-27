@@ -3,14 +3,14 @@
 <div class="checkout-container">
   <h2>Checkout</h2>
   <div class="cart-items">
-    <ul>
+    <p>
       {% for item in cart %}
       <li>
         <span>{{ item[1] }} with {{ item[3] }}</span>
         <span>${{ "%.2f"|format(item[4]) }}</span>
       </li>
       {% endfor %}
-    </ul>
+    </p>
   </div>
   <div class="total-price">
     <h3>Total: ${{ "%.2f"|format(total) }}</h3>
@@ -18,6 +18,7 @@
   <form action="/submit" method="post">
     <button type="submit">Submit Order</button>
   </form>
+  <br>
   <a href="/clearcart" class="clear-cart-button"><button>Clear Cart</button></a>
 </div>
 {% endblock %}
