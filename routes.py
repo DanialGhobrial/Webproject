@@ -26,7 +26,7 @@ def home():
     random_data = get_random_data()
     cur.execute('SELECT * FROM Base')
     bases = cur.fetchall()
-    return render_template('home.html', data=random_data, bases=bases)
+    return render_template('home.html', data=random_data, bases=bases, title="Home")
 
 
 # Function to get random data from the 'Movie' table
@@ -92,7 +92,7 @@ def menu():
     cur.execute('SELECT * FROM Base')
     bases = cur.fetchall()
     conn.close()
-    return render_template('menu.html', results=results, bases=bases)
+    return render_template('menu.html', results=results, bases=bases, title="Menu")
 
 
 # Route for menu page when loged out 
@@ -111,6 +111,7 @@ def offers():
     return render_template("offers.html", title="Offers")
 
 
+# Route for stores page
 @app.route('/stores')
 def stores():
     return render_template("stores.html", title="Stores")

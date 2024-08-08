@@ -6,7 +6,7 @@
    <a href="/pizza/{{item[0]}}"><img src="{{ item[3] }}">
    </a>
       <form action="/cart" method="post">
-         <label><b>{{item[1]}}</b></label>
+         <label><b>{{item[1]}}  ${{ "%.2f"|format(item[2]) }}</b></label>
          <input type="hidden" name="id" value="{{ item[0] }}">
          <input type="hidden" name="name" value="{{ item[1] }}">
          <select name="base_id" required>

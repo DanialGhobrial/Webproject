@@ -5,11 +5,11 @@
 <!-- the ACTION is the route we try to post to! -->
 <form action="/signup" method="post">
     <label for="username">Username</label>
-    <input type="text" name="username">
+    <input type="text" maxlength ="25" name="username">
     <label for="password">Password</label>
     <input type="password" name="password">
     <label for="adress">Adress</label>
-    <input type="text" name="adress">
+    <input type="text" maxlength ="25" name="adress">
     <button type="submit">Signup</button>
 </form>
 {% endblock %}
