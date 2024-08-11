@@ -3,22 +3,33 @@
 <div class="checkout-container">
   <h2>Checkout</h2>
   <div class="cart-items">
-    <p>
+    <ul>
       {% for item in cart %}
       <li>
         <span>{{ item[1] }} with {{ item[3] }}</span>
         <span>${{ "%.2f"|format(item[4]) }}</span>
       </li>
       {% endfor %}
-    </p>
+    </ul>
   </div>
   <div class="total-price">
-    <h3>Total: ${{ "%.2f"|format(total) }}</h3>
+    <h3>Original Total: ${{ "%.2f"|format(total) }}</h3>
+    {% if discount %}
+    <h3>Discount: {{ discount*100 }}%</h3>
+    <h3>Total After Discount: ${{ "%.2f"|format(total_after_discount) }}</h3>
+    {% endif %}
   </div>
+
   <form action="/submit" method="post">
     <button type="submit">Submit Order</button>
   </form>
   <br>
   <a href="/clearcart" class="clear-cart-button"><button>Clear Cart</button></a>
+
+  <form action="/apply_promo" method="post">
+    <label for="promo_code">Enter Promo Code:</label>
+    <input type="text" id="promo_code" name="promo_code">
+    <button type="submit">Apply</button>
+  </form>
 </div>
 {% endblock %}

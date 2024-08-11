@@ -3,6 +3,26 @@
     <head>
         <title>{{title}}</title>
         <link rel="stylesheet" href="../static/CSS/style.css">
+        <style>
+            .flash-message {
+                position: fixed;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                background-color: red;
+                color: white;
+                padding: 10px;
+                border-radius: 5px;
+                text-align: center;
+                z-index: 1000;
+                opacity: 0;
+                transition: opacity 0.5s ease-in-out;
+            }
+
+            .flash-message.show {
+                opacity: 1;
+            }
+        </style>
     </head>
     <body>
         <header>     
@@ -17,16 +37,26 @@
         <footer>
             {% include "footer.html" %}
         </footer>
-    </body>
 
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    
-    <ul>
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
+        <div class="flash-message" id="flash-message">
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            {{ messages[0] }}
+            {% endif %}
+            {% endwith %}
+        </div>
+
+        <script>
+            // Show the flash message for 5 seconds, then hide it
+            document.addEventListener('DOMContentLoaded', function() {
+                const flashMessage = document.getElementById('flash-message');
+                if (flashMessage.innerText.trim()) {
+                    flashMessage.classList.add('show');
+                    setTimeout(() => {
+                        flashMessage.classList.remove('show');
+                    }, 5000);
+                }
+            });
+        </script>
+    </body>
 </html>

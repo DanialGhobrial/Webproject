@@ -116,15 +116,40 @@ def offers():
 def stores():
     return render_template("stores.html", title="Stores")
 
+@app.route('/apply_promo', methods=["POST"])
+def apply_promo():
+    promo_code = request.form['promo_code']
+    conn = sqlite3.connect(DATABASE)
+    cur = conn.cursor()
+
+    # Check if the promo code is valid
+    cur.execute('SELECT id, discount FROM PromoCodes WHERE code=?', (promo_code,))
+    promo = cur.fetchone()
+
+    if promo:
+        # Valid promo code
+        session['promo_code_id'] = promo[0]
+        session['discount'] = promo[1]
+        flash(f"Promo code applied! You get {promo[1]*100}% off.")
+    else:
+        # Invalid promo code
+        flash("Invalid promo code.")
+
+    conn.close()
+    return redirect('/checkout')
 
 @app.route('/checkout')
 def checkout():
-    if "cart" not in session or not session['cart']:
-        return render_template("checkout.html", title="Checkout", total=0)
+    cart = session.get('cart', [])
+    
+    # Assuming each item in the cart is a tuple or list where the price is the 5th element (index 4)
+    total = sum(item[4] for item in cart)
+    
+    discount = session.get('discount', 0)
+    total_after_discount = total * (1 - discount)
+    
+    return render_template('checkout.html', cart=cart, total=total, total_after_discount=total_after_discount, discount=discount)
 
-    cart = session['cart']
-    total = sum(float(item[-1]) for item in cart)  # Ensure prices are treated as floats
-    return render_template("checkout.html", title="Checkout", cart=cart, total=total)
 
 
 @app.route('/login', methods=["GET", "POST"])

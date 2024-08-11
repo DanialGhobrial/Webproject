@@ -1,12 +1,19 @@
 {% extends "layout.html" %}
 {% block content %}
-<h2>Before we order lets get some of your details! If Your a first time user Please <a href="/signup">Sign Up </a>First!</h1>
+<div class="auth-container">
+    <h2>Before we order, let's get some of your details!</h2>
+    <p>If you're a first-time user, please <a href="/signup">Sign Up</a> first!</p>
 
-<form action="/login" method="post">
-    <label for="username">Username</label>
-    <input type="text" maxlength ="25" name="username">
-    <label for="password">Password</label>
-    <input type="password" name="password">
-    <button type="submit">Login</button>
-</form>
+    <form action="/login" method="post" class="auth-form">
+        <div class="auth-form-group">
+            <label for="username">Username</label>
+            <input type="text" maxlength="25" name="username" class="auth-form-input" required>
+        </div>
+        <div class="auth-form-group">
+            <label for="password">Password</label>
+            <input type="password" name="password" class="auth-form-input" required>
+        </div>
+        <button type="submit" class="auth-form-button">Login</button>
+    </form>
+</div>
 {% endblock %}
