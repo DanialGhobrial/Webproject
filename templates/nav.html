@@ -1,5 +1,5 @@
 <ul class="topnav">
-    {% if 'user' == None %}
+    {% if 'user'not in session %}
     <li><a class="active" href="/">Home</a></li>
     <li><a href="/menuout">Menu</a></li>
     <li><a href="/offers">Offers</a></li>

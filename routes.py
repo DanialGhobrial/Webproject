@@ -200,9 +200,9 @@ def signup():
 
 @app.route('/logout')
 def logout():
-    # clear the username from the session and redirect back to the home page
-    session['user'] = None
-    session['cart'] = None
+    # Clear all session data
+    session.clear()
+    # Redirect to the home page
     return redirect('/')
 
 
@@ -284,21 +284,21 @@ def submit():
 
 
 # Custom error handling for page not found errors
-@app.errorhandler(404)
-def page_not_found(error):
-   return render_template('error.html', error='Page not found'), 404
+#app.errorhandler(404)
+#def page_not_found(error):
+#   return render_template('error.html', error='Page not found'), 404
 
 
 # Custom error handling for 500 (Internal Server Error) error
-@app.errorhandler(500)
-def internal_server_error(error):
-  return render_template('error.html', error='Internal server error'), 500
+#@app.errorhandler(500)
+#def internal_server_error(error):
+#  return render_template('error.html', error='Internal server error'), 500
 
 
 # Custom error handling for other unexpected errors
-@app.errorhandler(Exception)
-def unexpected_error(error):
-   return render_template('error.html', error='Something went wrong'), 500
+#@app.errorhandler(Exception)
+#def unexpected_error(error):
+#   return render_template('error.html', error='Something went wrong'), 500
 
 
 if __name__ == "__main__":
