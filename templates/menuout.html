@@ -1,13 +1,17 @@
 {% extends "layout.html" %}
 {% block content %}
 <div class="gridmenu">
-{% for item in results%}
-<div class="middleimage">
-   <a href="/pizzaout/{{item[0]}}"><img src="{{ item[3] }}">
-   
-      <a><b>{{item[1]}}</b></a>
+  {% for item in results %}
+  <div class="menu-item">
+    <a href="/pizzaout/{{ item[0] }}">
+      <img src="{{ item[3] }}" alt="{{ item[1] }}">
+      <h3>{{ item[1] }}</h3>
+      <span>${{ "%.2f"|format(item[2]) }}</span>
+      <a href="/login">
+        <button class="order-now-button">Order Now</button>
+      </a>
     </a>
-   </div>
-      {% endfor %}
-   </div>   
+  </div>
+  {% endfor %}
+</div>
 {% endblock %}

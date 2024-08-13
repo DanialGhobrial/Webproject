@@ -19,13 +19,16 @@
             {% include "footer.html" %}
         </footer>
 
-        <div class="flash-message" id="flash-message">
-            {% with messages = get_flashed_messages() %}
-            {% if messages %}
-            {{ messages[0] }}
-            {% endif %}
-            {% endwith %}
-        </div>
+        {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+          <div class="flash-messages">
+            {% for category, message in messages %}
+              <div class="flash-message {{ category }} show">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+      
 
         <script>
             // Show the flash message for 5 seconds, then hide it

@@ -291,7 +291,6 @@ body.error-page {
 .error-page .reload-button {
   background-color: #28a745;
 }
-
 /* Checkout Styles */
 .checkout-container {
   max-width: 800px;
@@ -301,30 +300,32 @@ body.error-page {
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
-  list-style-type: none
 }
 
-.checkout-container h1 {
+.checkout-container h2 {
   color: #333333;
   margin-bottom: 20px;
-  list-style-type: none
 }
 
-.order-items {
-  margin-bottom: 20px;
+.cart-items ul {
+  list-style-type: none; 
+  padding: 0;
+  margin: 0;
 }
 
-.order-item {
-  background-color: #ffffff;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+.cart-items li {
+  padding: 10px 0; 
+  border-bottom: 1px solid #ddd; 
+  display: flex;
+  justify-content: space-between; 
 }
 
-.checkout-form {
-  margin-bottom: 20px;
-  list-style-type: none
+.cart-items span {
+  display: inline-block;
+}
+
+.total-price h3 {
+  margin: 10px 0; 
 }
 
 .checkout-button, .clear-cart-button button {
@@ -347,6 +348,10 @@ body.error-page {
 
 .clear-cart-button button:hover {
   background-color: #d32f2f;
+}
+
+.checkout-form {
+  margin-bottom: 20px;
 }
 
 
@@ -528,7 +533,6 @@ body.error-page {
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  background-color: red;
   color: white;
   padding: 10px;
   border-radius: 5px;
@@ -538,6 +542,161 @@ body.error-page {
   transition: opacity 0.5s ease-in-out;
 }
 
+.flash-message.success {
+  background-color: green;
+}
+
+.flash-message.error {
+  background-color: red;
+}
+
 .flash-message.show {
   opacity: 1;
+}
+
+
+/* Offers Page Styles */
+.offers-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.offers-container h2 {
+  color: #333333;
+  margin-bottom: 20px;
+}
+
+.offers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.offer-item {
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.offer-description {
+  font-size: 16px;
+  color: #333333;
+  margin-bottom: 10px;
+}
+
+.offer-code {
+  font-size: 16px;
+  color: #04AA6D; 
+  margin-top: 10px;
+}
+
+/* Styles for pizzaout page */
+.pizzaout-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.pizza-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.pizza-details {
+  margin-top: 20px;
+}
+
+.pizza-title {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.pizza-price {
+  color: #04AA6D;
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.order-now-button button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.order-now-button button:hover {
+  background-color: #028a5e;
+}
+
+/* Menuout Page Styles */
+.gridmenu {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.menu-item {
+  background-color: #ffffff;
+  text-align: center;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s;
+}
+
+.menu-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.menu-item img {
+  width: 100%;
+  height: auto;
+}
+
+.menu-item h3 {
+  font-size: 18px;
+  color: #333333;
+  margin: 10px 0;
+}
+
+.menu-item span {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.order-now-button {
+  background-color: #04AA6D;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-decoration: none;
+}
+
+.order-now-button:hover {
+  background-color: #028a5e;
 }

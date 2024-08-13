@@ -26,7 +26,11 @@ def home():
     random_data = get_random_data()
     cur.execute('SELECT * FROM Base')
     bases = cur.fetchall()
-    return render_template('home.html', data=random_data, bases=bases, title="Home")
+    if 'user' in session:
+        return render_template('home.html', data=random_data, bases=bases, title="Home")
+    else:
+        return render_template('home_not_logged_in.html', data=random_data, bases=bases, title="Home")
+
 
 
 # Function to get random data from the 'Movie' table
@@ -130,10 +134,10 @@ def apply_promo():
         # Valid promo code
         session['promo_code_id'] = promo[0]
         session['discount'] = promo[1]
-        flash(f"Promo code applied! You get {promo[1]*100}% off.")
+        flash(f"Promo code applied! You get {promo[1]*100}% off.", "success")
     else:
         # Invalid promo code
-        flash("Invalid promo code.")
+        flash("Invalid promo code.", "error")
 
     conn.close()
     return redirect('/checkout')
@@ -169,13 +173,13 @@ def login():
                 # we are logged in successfully
                 # Store the username in the session
                 session['user'] = user
-                flash("Logged in successfully")
+                flash("Logged in successfully", "success")
                 session['cart'] = []
                 return redirect("/menu")
             else:
-                flash("Password incorrect")
+                flash("Password incorrect", "error")
         else:
-            flash("Username does not exist")
+            flash("Username does not exist", "error")
     # render this template regardless of get/post
     return render_template('login.html')
 
@@ -193,7 +197,7 @@ def signup():
         # write it as a new user to the database
         sql = "INSERT INTO user (username,password,address) VALUES (?,?,?)"
         query_db(sql, (username, hashed_password, address))
-        flash("Sign Up Successful")
+        flash("Sign Up Successful", "success")
         return redirect("/login")
     return render_template('signup.html')
 
@@ -203,6 +207,7 @@ def logout():
     # Clear all session data
     session.clear()
     # Redirect to the home page
+    flash("Order successfully  submited.", "success")
     return redirect('/')
 
 
@@ -280,7 +285,7 @@ def submit():
         cursor.execute('INSERT INTO Orders (userid, pizzaid, baseid) VALUES (?, ?, ?)', (userid, pizza_id, base_id))
     conn.commit()
     conn.close()
-    return redirect("/clearcart")
+    return redirect("/logout")
 
 
 # Custom error handling for page not found errors

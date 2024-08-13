@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="home-container">
+  <h2 class="section-title"><b>Pizzas You May Like</b></h2>
+  <div class="pizzas-grid">
+    {% for pizza in data %}
+      <div class="pizza-card">
+        <div class="pizza-image">
+          <a href="/pizza/{{ pizza[0] }}"><img src="{{ pizza[3] }}" alt="{{ pizza[1] }}"></a>
+        </div>
+        <div class="pizza-info">
+          <h3 class="pizza-title">{{ pizza[1] }}</h3>
+          <form class="order-now-form" action="/login">
+            <input type="hidden" name="id" value="{{ pizza[0] }}">
+            <input type="hidden" name="name" value="{{ pizza[1] }}">
+            <button type="submit" class="order-now-button">Order Now</button>
+          </form>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+  <div class="home-buttons">
+    <a href="/"> <button class="refresh-button">Refresh Selection</button></a>
+    <a href="/menuout"> <button class="menu-button">Check Out Our Menu</button> </a>
+  </div>
+</div>
+{% endblock %}

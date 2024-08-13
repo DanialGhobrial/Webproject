@@ -1,12 +1,15 @@
 {% extends "layout.html" %}
 {% block content %}
-<div class="image11">
-    <img src="{{ pizza[3] }}">
+<div class="pizzaout-container">
+  <div class="pizza-image">
+    <img src="{{ pizza[3] }}" alt="{{ pizza[1] }}">
   </div>
-
-  <div class="text11">
-    <h2>{{pizza[1]}}</h2>
-    <h1>${{pizza[2]}}</h1>
-
-   <a href="/login"> <button>Order Now!</button></a>
+  
+  <div class="pizza-details">
+    <h2 class="pizza-title">{{ pizza[1] }}</h2>
+    <h1 class="pizza-price">${{ pizza[2] }}</h1>
+    <a href="/login" class="order-now-button">
+      <button>Order Now!</button>
+    </a>
+  </div>
 {% endblock %}

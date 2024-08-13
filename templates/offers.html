@@ -1,4 +1,25 @@
 {% extends "layout.html" %}
 {% block content %}
-offers
+<div class="offers-container">
+  <h2>Special Offers</h2>
+  <div class="offers-list">
+    <div class="offer-item">
+      <p class="offer-description">Get 10% off pizzas with code <strong>GET10</strong> at checkout.</p>
+      <p class="offer-code">Code: <strong>GET10</strong></p>
+    </div>
+    <div class="offer-item">
+      <p class="offer-description">Free delivery on orders over $30 with code <strong>FREESHIP</strong>.</p>
+      <p class="offer-code">Code: <strong>FREESHIP</strong></p>
+    </div>
+    <div class="offer-item">
+      <p class="offer-description">Buy one pizza, get one free with code <strong>BOGO</strong>.</p>
+      <p class="offer-code">Code: <strong>BOGO</strong></p>
+    </div>
+    <div class="offer-item">
+      <p class="offer-description">15% off your next order with code <strong>NEXT15</strong>.</p>
+      <p class="offer-code">Code: <strong>NEXT15</strong></p>
+    </div>
+  </div>
+  <p class="copy-instruction">Click and drag to select the promo code above, then press `Ctrl+C` (or `Cmd+C` on Mac) to copy it.</p>
+</div>
 {% endblock %}
