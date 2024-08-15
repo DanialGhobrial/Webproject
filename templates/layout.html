@@ -29,18 +29,5 @@
         {% endif %}
       {% endwith %}
       
-
-        <script>
-            // Show the flash message for 5 seconds, then hide it
-            document.addEventListener('DOMContentLoaded', function() {
-                const flashMessage = document.getElementById('flash-message');
-                if (flashMessage.innerText.trim()) {
-                    flashMessage.classList.add('show');
-                    setTimeout(() => {
-                        flashMessage.classList.remove('show');
-                    }, 5000);
-                }
-            });
-        </script>
     </body>
 </html>

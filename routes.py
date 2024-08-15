@@ -32,7 +32,6 @@ def home():
         return render_template('home_not_logged_in.html', data=random_data, bases=bases, title="Home")
 
 
-
 # Function to get random data from the 'Movie' table
 def get_random_data():
     with sqlite3.connect("Database/pizza.db") as conn:
@@ -96,17 +95,10 @@ def menu():
     cur.execute('SELECT * FROM Base')
     bases = cur.fetchall()
     conn.close()
-    return render_template('menu.html', results=results, bases=bases, title="Menu")
-
-
-# Route for menu page when loged out 
-@app.route('/menuout')
-def menuout():
-    conn = sqlite3.connect(DATABASE)
-    cur = conn.cursor()
-    cur.execute('SELECT * FROM Pizza')
-    results = cur.fetchall()
-    return render_template('menuout.html', results=results)
+    if 'user' in session:
+        return render_template('menu.html', results=results, bases=bases, title="Menu")
+    else:
+        return render_template('menuout.html', results=results)
 
 
 # Route for offers Page
@@ -120,16 +112,16 @@ def offers():
 def stores():
     return render_template("stores.html", title="Stores")
 
+
+# Route for Applying Promo
 @app.route('/apply_promo', methods=["POST"])
 def apply_promo():
     promo_code = request.form['promo_code']
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
-
     # Check if the promo code is valid
     cur.execute('SELECT id, discount FROM PromoCodes WHERE code=?', (promo_code,))
     promo = cur.fetchone()
-
     if promo:
         # Valid promo code
         session['promo_code_id'] = promo[0]
@@ -138,24 +130,21 @@ def apply_promo():
     else:
         # Invalid promo code
         flash("Invalid promo code.", "error")
-
     conn.close()
     return redirect('/checkout')
 
+
+# Route for Checkout Page
 @app.route('/checkout')
 def checkout():
     cart = session.get('cart', [])
-    
-    # Assuming each item in the cart is a tuple or list where the price is the 5th element (index 4)
     total = sum(item[4] for item in cart)
-    
     discount = session.get('discount', 0)
     total_after_discount = total * (1 - discount)
-    
     return render_template('checkout.html', cart=cart, total=total, total_after_discount=total_after_discount, discount=discount)
 
 
-
+# Route for login page
 @app.route('/login', methods=["GET", "POST"])
 def login():
     # if the user posts a username and password
@@ -184,6 +173,7 @@ def login():
     return render_template('login.html')
 
 
+# Route for signup page
 @app.route('/signup', methods=["GET", "POST"])
 def signup():
     # if the user posts from the signup page
@@ -202,21 +192,34 @@ def signup():
     return render_template('signup.html')
 
 
+# Route for logout
 @app.route('/logout')
 def logout():
     # Clear all session data
     session.clear()
     # Redirect to the home page
+    flash("Logged out successfully.", "success")
+    return redirect('/')
+
+
+# Route for logout
+@app.route('/completeorder')
+def completeorder():
+    # Clear all session data
+    session['cart'] = []
+    # Redirect to the home page
     flash("Order successfully  submited.", "success")
     return redirect('/')
 
 
+# Route to clear cart
 @app.route('/clearcart')
 def clearcart():
     session['cart'] = []
     return redirect('/menu')
 
 
+# Route to add something to cart from menu page
 @app.post('/menucart')
 def menucart():
     pizza_id = request.form['id']
@@ -244,6 +247,7 @@ def menucart():
     return redirect("/menu")
 
 
+# Route for cart
 @app.post('/cart')
 def cart():
     pizza_id = request.form['id']
@@ -274,6 +278,7 @@ def cart():
     return redirect("/menu")
 
 
+# Route to submit order to the database
 @app.post('/submit')
 def submit():
     conn = sqlite3.connect(DATABASE)
@@ -285,25 +290,25 @@ def submit():
         cursor.execute('INSERT INTO Orders (userid, pizzaid, baseid) VALUES (?, ?, ?)', (userid, pizza_id, base_id))
     conn.commit()
     conn.close()
-    return redirect("/logout")
+    return redirect("/completeorder")
 
 
 # Custom error handling for page not found errors
-#app.errorhandler(404)
-#def page_not_found(error):
-#   return render_template('error.html', error='Page not found'), 404
+app.errorhandler(404)
+def page_not_found(error):
+    return render_template('error.html', error='Page not found'), 404
 
 
 # Custom error handling for 500 (Internal Server Error) error
-#@app.errorhandler(500)
-#def internal_server_error(error):
-#  return render_template('error.html', error='Internal server error'), 500
+@app.errorhandler(500)
+def internal_server_error(error):
+    return render_template('error.html', error='Internal server error'), 500
 
 
 # Custom error handling for other unexpected errors
-#@app.errorhandler(Exception)
-#def unexpected_error(error):
-#   return render_template('error.html', error='Something went wrong'), 500
+@app.errorhandler(Exception)
+def unexpected_error(error):
+    return render_template('error.html', error='Something went wrong'), 500
 
 
 if __name__ == "__main__":
