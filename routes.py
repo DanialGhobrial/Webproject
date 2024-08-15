@@ -37,6 +37,7 @@ def get_random_data():
     ''' # Function to get random data from the Movies table '''
     with sqlite3.connect("Database/pizza.db") as conn:
         cursor = conn.cursor()
+        # selecting 4 pizzas in a random order
         cursor.execute("SELECT * FROM Pizza ORDER BY RANDOM() LIMIT 4")
         data = cursor.fetchall()
     return data
@@ -79,10 +80,10 @@ def menu():
     cur.execute('SELECT * FROM Base')
     bases = cur.fetchall()
     conn.close()
+    # checks if user is in session to show the correct menu page
     if 'user' in session:
         return render_template('menu.html', results=results, bases=bases, title="Menu")
-    else:
-        return render_template('menuout.html', results=results)
+    return render_template('menuout.html', results=results)
 
 
 @app.route('/offers')
