@@ -1,5 +1,6 @@
-from flask import Flask, render_template, session, flash, redirect, request
+''' This is the routes page for my pizza website. '''
 import sqlite3
+from flask import Flask, render_template, session, flash, redirect, request
 from werkzeug.security import generate_password_hash, check_password_hash
 
 DATABASE = "Database/pizza.db"
@@ -18,22 +19,22 @@ def query_db(sql, args=(), one=False):
     return (results[0] if results else None) if one else results
 
 
-# Route for Home Page
 @app.route('/')
 def home():
+    ''' # route for home page'''
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
     random_data = get_random_data()
     cur.execute('SELECT * FROM Base')
     bases = cur.fetchall()
     if 'user' in session:
+        # checks if user is in session to determine what homepage they see
         return render_template('home.html', data=random_data, bases=bases, title="Home")
-    else:
-        return render_template('home_not_logged_in.html', data=random_data, bases=bases, title="Home")
+    return render_template('home_not_logged_in.html', data=random_data, bases=bases, title="Home")
 
 
-# Function to get random data from the 'Movie' table
 def get_random_data():
+    ''' # Function to get random data from the Movies table '''
     with sqlite3.connect("Database/pizza.db") as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM Pizza ORDER BY RANDOM() LIMIT 4")
@@ -41,53 +42,36 @@ def get_random_data():
     return data
 
 
-# Route for pizza Page
-@app.route('/pizza/<int:id>')
-def pizza(id):
+@app.route('/pizza/<int:pizza_id>')
+def pizza_page(pizza_id):
+    ''' # route for pizza page'''
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
-    try:
-        # Fetch the selected pizza details
-        cur.execute('SELECT * FROM Pizza WHERE id=?', (id,))
-        pizza = cur.fetchone()
-        if not pizza:
-            raise ValueError(f"No pizza found with ID {id}")
-        # Fetch ingredients of the selected pizza
-        cur.execute('''
+    # Fetch the selected pizza details
+    cur.execute('SELECT * FROM Pizza WHERE id=?', (pizza_id,))
+    selected_pizza = cur.fetchone()  # Renamed variable to avoid conflict
+    if not selected_pizza:
+        raise ValueError(f"No pizza found with ID {pizza_id}")
+    # Fetch ingredients of the selected pizza
+    cur.execute('''
             SELECT Ingredients.Name
             FROM Ingredients
             JOIN PizzaIngredients ON Ingredients.ID = PizzaIngredients.IngredientID
             WHERE PizzaIngredients.PizzaID = ?
-        ''', (id,))
-        ingredients = [row[0] for row in cur.fetchall()]
-        # Fetch all bases (assuming this is unchanged)
-        cur.execute('SELECT * FROM Base')
-        bases = cur.fetchall()
-        conn.close()
-        return render_template('pizza.html', pizza=pizza, bases=bases, ingredients=ingredients)
-    except Exception as e:
-        print(f"Error fetching pizza details: {e}")
-        conn.close()
-        return render_template('error.html', message="An error occurred while fetching pizza details.")
-
-
-# Route for Pizzaout.html Page
-@app.route('/pizzaout/<int:id>')
-def pizzaout(id):
-    conn = sqlite3.connect(DATABASE)
-    cur = conn.cursor()
-    # Fetch the selected pizza
-    cur.execute('SELECT * FROM Pizza WHERE id=?', (id,))
-    pizza = cur.fetchone()
-    # Fetch all bases
+        ''', (pizza_id,))
+    ingredients = [row[0] for row in cur.fetchall()]
+    # Fetch all bases (assuming this is unchanged)
     cur.execute('SELECT * FROM Base')
     bases = cur.fetchall()
-    return render_template('pizzaout.html', pizza=pizza, bases=bases)
+    conn.close()
+    if 'user' in session:
+        return render_template('pizza.html', pizza=selected_pizza, bases=bases, ingredients=ingredients)
+    return render_template('pizzaout.html', pizza=selected_pizza, bases=bases, ingredients=ingredients)
 
 
-# Route for menu page
 @app.route('/menu')
 def menu():
+    ''' # Route for menu Page'''
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
     cur.execute('SELECT * FROM Pizza')
@@ -101,21 +85,21 @@ def menu():
         return render_template('menuout.html', results=results)
 
 
-# Route for offers Page
 @app.route('/offers')
 def offers():
+    ''' # Route for offers Page'''
     return render_template("offers.html", title="Offers")
 
 
-# Route for stores page
 @app.route('/stores')
 def stores():
+    ''' # Route for stores page'''
     return render_template("stores.html", title="Stores")
 
 
-# Route for Applying Promo
 @app.route('/apply_promo', methods=["POST"])
 def apply_promo():
+    ''' # Route for applying Promo Codes'''
     promo_code = request.form['promo_code']
     conn = sqlite3.connect(DATABASE)
     cur = conn.cursor()
@@ -134,19 +118,20 @@ def apply_promo():
     return redirect('/checkout')
 
 
-# Route for Checkout Page
 @app.route('/checkout')
 def checkout():
-    cart = session.get('cart', [])
-    total = sum(item[4] for item in cart)
+    ''' # Route for the checkout page'''
+    current_cart = session.get('cart', [])  # Renamed to avoid conflict
+    total = sum(item[4] for item in current_cart)
     discount = session.get('discount', 0)
     total_after_discount = total * (1 - discount)
-    return render_template('checkout.html', cart=cart, total=total, total_after_discount=total_after_discount, discount=discount)
+    return render_template('checkout.html', cart=current_cart, total=total, total_after_discount=total_after_discount, discount=discount)
 
 
-# Route for login page
+
 @app.route('/login', methods=["GET", "POST"])
 def login():
+    '''Route for login Page'''
     # if the user posts a username and password
     if request.method == "POST":
         # get the username and password
@@ -165,17 +150,16 @@ def login():
                 flash("Logged in successfully", "success")
                 session['cart'] = []
                 return redirect("/menu")
-            else:
-                flash("Password incorrect", "error")
+            flash("Password incorrect", "error")
         else:
             flash("Username does not exist", "error")
     # render this template regardless of get/post
     return render_template('login.html')
 
 
-# Route for signup page
 @app.route('/signup', methods=["GET", "POST"])
 def signup():
+    ''' # Route for signup page'''
     # if the user posts from the signup page
     if request.method == "POST":
         # add the new username and hashed password to the database
@@ -192,19 +176,18 @@ def signup():
     return render_template('signup.html')
 
 
-# Route for logout
 @app.route('/logout')
 def logout():
-    # Clear all session data
+    '''Route for logout page'''
     session.clear()
     # Redirect to the home page
     flash("Logged out successfully.", "success")
     return redirect('/')
 
 
-# Route for logout
 @app.route('/completeorder')
 def completeorder():
+    ''' # Route for completing an order'''
     # Clear all session data
     session['cart'] = []
     # Redirect to the home page
@@ -212,16 +195,16 @@ def completeorder():
     return redirect('/')
 
 
-# Route to clear cart
 @app.route('/clearcart')
 def clearcart():
+    ''' # Route to clear cart '''
     session['cart'] = []
     return redirect('/menu')
 
 
-# Route to add something to cart from menu page
 @app.post('/menucart')
 def menucart():
+    ''' # Route to add something to cart from menu page '''
     pizza_id = request.form['id']
     pizza_name = request.form['name']
     base_id = 1  # Default base ID
@@ -238,18 +221,18 @@ def menucart():
     item_price = pizza_price + base_price
 
     if "cart" in session:
-        cart = session['cart']
-        cart.append((pizza_id, pizza_name, base_id, item_price))
-        session['cart'] = cart
+        current_cart = session['cart']  # Renamed to avoid conflict
+        current_cart.append((pizza_id, pizza_name, base_id, item_price))
+        session['cart'] = current_cart
     else:
         session['cart'] = [(pizza_id, pizza_name, base_id, item_price)]
 
     return redirect("/menu")
 
 
-# Route for cart
 @app.post('/cart')
-def cart():
+def add_to_cart():
+    ''' # Route for cart '''
     pizza_id = request.form['id']
     pizza_name = request.form['name']
     base_id = request.form['base_id']
@@ -269,18 +252,18 @@ def cart():
     item_price = pizza_price + base_price
 
     if "cart" in session:
-        cart = session['cart']
-        cart.append((pizza_id, pizza_name, base_id, base_name, item_price))
-        session['cart'] = cart
+        current_cart = session['cart']  # Renamed to avoid conflict
+        current_cart.append((pizza_id, pizza_name, base_id, base_name, item_price))
+        session['cart'] = current_cart
     else:
         session['cart'] = [(pizza_id, pizza_name, base_id, base_name, item_price)]
 
     return redirect("/menu")
 
 
-# Route to submit order to the database
 @app.post('/submit')
 def submit():
+    ''' # Route to submit order to the database'''
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
     cart = session['cart']
@@ -293,22 +276,22 @@ def submit():
     return redirect("/completeorder")
 
 
-# Custom error handling for page not found errors
-app.errorhandler(404)
+@app.errorhandler(404)
 def page_not_found(error):
-    return render_template('error.html', error='Page not found'), 404
+    ''' # Custom error handling for page not found errors'''
+    return render_template('error.html', error=str(error)), 404
 
 
-# Custom error handling for 500 (Internal Server Error) error
 @app.errorhandler(500)
 def internal_server_error(error):
-    return render_template('error.html', error='Internal server error'), 500
+    ''' # Custom error handling for internal server errors'''
+    return render_template('error.html', error=str(error)), 500
 
 
-# Custom error handling for other unexpected errors
 @app.errorhandler(Exception)
 def unexpected_error(error):
-    return render_template('error.html', error='Something went wrong'), 500
+    ''' # Custom error handling for other unexpected errors'''
+    return render_template('error.html', error=str(error)), 500
 
 
 if __name__ == "__main__":
