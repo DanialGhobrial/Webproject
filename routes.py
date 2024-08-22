@@ -205,10 +205,11 @@ def logout():
 # Route for logout
 @app.route('/completeorder')
 def completeorder():
-    # Clear all session data
-    session['cart'] = []
-    # Redirect to the home page
-    flash("Order successfully  submited.", "success")
+    if session['cart'] == []:
+        flash("Please add at least one pizza to your order.", "error")
+    else:
+        session['cart'] = []
+        flash("Order successfully submited.", "success")
     return redirect('/')
 
 
@@ -292,6 +293,15 @@ def submit():
     conn.close()
     return redirect("/completeorder")
 
+
+@app.route('/your_orders')
+def your_orders():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))  # Redirect to login if not logged in
+    
+    user_id = session['user_id']
+    orders = get_orders_by_user(user_id)
+    return render_template('your_orders.html', orders=orders)
 
 # Custom error handling for page not found errors
 app.errorhandler(404)
