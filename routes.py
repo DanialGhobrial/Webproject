@@ -247,6 +247,26 @@ def menucart():
 
     return redirect("/menu")
 
+@app.route('/your_orders')
+def your_orders():
+    if 'user' not in session:
+        flash("Please log in to view your orders.", "error")
+        return redirect('/login')
+    
+    user_id = session['user'][0]  # Assuming user_id is the first element in session['user']
+    
+    # Query to get the user's orders
+    orders = query_db('''
+        SELECT Orders.id, Pizza.type, Base.name, Orders.order_date
+        FROM Orders
+        JOIN Pizza ON Orders.pizzaid = Pizza.id
+        JOIN Base ON Orders.baseid = Base.id
+        WHERE Orders.userid = ?
+        ORDER BY Orders.order_date DESC
+    ''', (user_id,))
+    
+    return render_template('yourorders.html', orders=orders, title="Your Orders")
+
 
 # Route for cart
 @app.post('/cart')
@@ -293,32 +313,22 @@ def submit():
     conn.close()
     return redirect("/completeorder")
 
-
-@app.route('/your_orders')
-def your_orders():
-    if 'user_id' not in session:
-        return redirect(url_for('login'))  # Redirect to login if not logged in
-    
-    user_id = session['user_id']
-    orders = get_orders_by_user(user_id)
-    return render_template('your_orders.html', orders=orders)
-
 # Custom error handling for page not found errors
-app.errorhandler(404)
-def page_not_found(error):
-    return render_template('error.html', error='Page not found'), 404
+#app.errorhandler(404)
+#def page_not_found(error):
+#    return render_template('error.html', error='Page not found'), 404
 
 
 # Custom error handling for 500 (Internal Server Error) error
-@app.errorhandler(500)
-def internal_server_error(error):
-    return render_template('error.html', error='Internal server error'), 500
+#@app.errorhandler(500)
+#def internal_server_error(error):
+#    return render_template('error.html', error='Internal server error'), 500
 
 
 # Custom error handling for other unexpected errors
-@app.errorhandler(Exception)
-def unexpected_error(error):
-    return render_template('error.html', error='Something went wrong'), 500
+#@app.errorhandler(Exception)
+#def unexpected_error(error):
+#    return render_template('error.html', error='Something went wrong'), 500
 
 
 if __name__ == "__main__":
